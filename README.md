@@ -14,7 +14,7 @@ or
 5. Run the code using: `python test.py <image_name>`
 6. To use default image run : `python test.py monet1.jpeg`
 
-==Output windows will come one by one, so close the one that opens to see the next step in the output==
+**Output windows will come one by one, so close the one that opens to see the next step in the output**
 
 
 Here's an example about how this extractor works. We use a painting by Monet as the input image.
