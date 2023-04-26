@@ -1,0 +1,7 @@
+# Dependencies / Libraries
+scikit-learn
+scipy
+matplotlib
+opencv-python
+numpy
+pandas

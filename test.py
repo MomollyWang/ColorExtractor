@@ -1,10 +1,11 @@
-from colors_extract import extract_color
+# import extractor.colors_extract
+import sys
+from extractor import colors_extract
 
 def main():
-    image = "monet1.jpeg"
-    k_values = [3,5,7]
-    for k in k_values:
-        extract_color(image, k)
+    image = sys.argv[1]
+    k_values = 5
+    colors_extract.extract_color(image, k_values)
 
 
 if __name__ == '__main__':

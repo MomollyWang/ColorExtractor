@@ -1,17 +1,20 @@
-from to_colors import show_colors, show_color_percentage, compress_image, show_img
-from image_process import resize, pixelize, find_centroids
-import matplotlib.pyplot as plt
+from .to_colors import *
+from .image_process import *
+
 
 def extract_color(image, k):
     
     rs_image = resize(image)
-    pixels  = pixelize(rs_image)
-    centroids_colors = find_centroids(rs_image, k)
-
+    df  = pixelize(rs_image)
+    elbow(df)
+     # flatten pixel list
+    pixels = rs_image.reshape((-1, 3))
+    color_k_means = find_centroids(pixels, k)
+    centroids_colors = np.asarray(color_k_means.cluster_centers_, dtype='uint8')
     show_colors(centroids_colors, k)
-    show_color_percentage(pixels, k, centroids_colors)
+    show_color_percentage(pixels, k, color_k_means,centroids_colors)
     
     show_img(rs_image)
-    compress_image(pixels, k, centroids_colors)
+    compress_image(pixels, color_k_means, centroids_colors)
 
 

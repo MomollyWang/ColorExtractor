@@ -28,23 +28,16 @@ def show_colors(centroids_colors, k):
 
     print("Dominant"+str(k)+"Colours of Image --->")
 
-    # plt.axis('off')
-    # plt.imshow([centroids_colors])
-    # plt.set_xticklabels(color_hex)
-    # plt.show()
     fig, ax = plt.subplots(1,1)
     img = ax.imshow([centroids_colors])
     x_label_list = rgb_to_hex(centroids_colors)
-    ax.set_xticks(range(k))
+    ax.set_xticks(range(0,k))
     ax.set_xticklabels(x_label_list)
+    plt.show()
 
 
 
-def show_color_percentage(pixels, k, centroids_colors):
-
-    # deploy kmeans to pixels
-    color_k_means= KMeans(k)
-    color_k_means.fit(pixels)
+def show_color_percentage(pixels, k, color_k_means, centroids_colors):
 
     # count how many pixels grouped in each color centroids
     pixels_num = np.unique(color_k_means.labels_, return_counts=True)[1]
@@ -52,7 +45,7 @@ def show_color_percentage(pixels, k, centroids_colors):
     percentage = pixels_num/pixels.shape[0]
     # round to 2 decimal
     percentage = np.around(percentage, decimals = 3)
-
+    
     print("Percentage: ",percentage)
     plt.title('Percentage Of Dominant Colors', size=16)
     plt.bar(range(1,k+1), percentage, color=np.array(centroids_colors)/255)
@@ -63,18 +56,15 @@ def show_color_percentage(pixels, k, centroids_colors):
 
 
 
-def compress_image(pixels, k, centroids_colors):
+def compress_image(pixels, color_k_means, centroids_colors):
+    
     p=pixels.copy()
-
-    # replace each pixel color values with its centroids
+     # replace each pixel color values with its centroids
     for px in range(pixels.shape[0]):
         for _ in range(centroids_colors.shape[0]):
             p[px]=centroids_colors[color_k_means.labels_[px]]
-    
-    # deploy kmeans to pixels
-    color_k_means= KMeans(k)
-    color_k_means.fit(pixels)
 
+    
     # generate new image only with dominant colors
     img = p.reshape(500, -1, 3)
     cv2.imwrite("regenrated_img.png",img)

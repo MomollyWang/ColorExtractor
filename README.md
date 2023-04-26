@@ -2,6 +2,21 @@
 
 Our project focuses on extracting color pallete of an image using  KMeans clustering algorithm. The basic idea is to treat each pixel in the image as a data point with a three-dimensional feature vector representing the pixel's RGB values. Then, the k-means algorithm is applied to cluster the data points into k clusters, where k is a pre-defined parameter. The resulting cluster centers represent the dominant colors in the image.
 
+
+To run the project follow the steps below:
+1. `git clone <https://github.com/MomollyWang/ColorExtractor.git>`
+2. `cd <path_to_project_folder>`
+3. Add the image you want to extract colors from to this folder.
+4. To install dependencies run: 
+`pip install -r requirements.txt` (for Python 2)
+or 
+`pip3 install -r requirements.txt` (for Python 3)
+5. Run the code using: `python test.py <image_name>`
+6. To use default image run : `python test.py monet1.jpeg`
+
+==Output windows will come one by one, so close the one that opens to see the next step in the output==
+
+
 Here's an example about how this extractor works. We use a painting by Monet as the input image.
 
 In this extractor, we handle input image by resizing it first. 

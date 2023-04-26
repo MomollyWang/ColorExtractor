@@ -3,12 +3,14 @@ import pandas as pd
 import matplotlib.image as img
 import cv2
 import matplotlib.pyplot as plt
+from scipy.cluster.vq import kmeans,vq
 from scipy.cluster.vq import whiten
 from sklearn.cluster import KMeans
+# from . import to_colors
 
 
 
-def resize(self, show = False):
+def resize(self, show = True):
     # read the image file
     image = img.imread(self)
     w, h = image.shape[:2]
@@ -18,21 +20,21 @@ def resize(self, show = False):
     rs_w = 500
     rs_image = cv2.resize(image, (int(rs_w*float(h)/w), rs_w))
 
-    if show:
+    # if show:
         # show original image and resized image
-        print('New shape :', rs_image.shape)
+    print('New shape :', rs_image.shape)
 
-        plt.figure(figsize=(16,10))
-        plt.axis("off")
+    plt.figure(figsize=(16,10))
+    plt.axis("off")
 
-        plt.subplot(121)
-        plt.title('Original image')
-        plt.imshow(image)
+    plt.subplot(121)
+    plt.title('Original image')
+    plt.imshow(image)
 
-        plt.subplot(122)
-        plt.title('Image after resized')
-        plt.imshow(rs_image)
-        plt.show()
+    plt.subplot(122)
+    plt.title('Image after resized')
+    plt.imshow(rs_image)
+    plt.show()
         
     return rs_image
     
@@ -59,13 +61,27 @@ def pixelize(rs_image):
         
     return df
 
+def elbow(df):
+    # use elbow plot to find the proper number for centroids/clusters
+    distortions = []
+    num_clusters = range(1, 10)
 
-def find_centroids(rs_image, k):
-    # flatten pixel list
-    pixels = rs_image.reshape((-1, 3))
+    for i in num_clusters:
+        cluster_centers, distortion = kmeans(df[['scaled_red','scaled_blue','scaled_green']],i)
+        distortions.append(distortion)
+        
+    # show elbow plot
+    plt.plot(num_clusters, distortions)
+    plt.xticks(num_clusters)
+    plt.title('Elbow Plot for Color Extraction', size=18)
+    plt.xlabel('Number of Clusters')
+    plt.ylabel("Distortions")
+    plt.show()
 
+def find_centroids(pixels, k):
+ 
     # deploy kmeans to pixels 
-    n_clusters = 5
+    n_clusters = k
     color_k_means= KMeans(n_clusters)
     color_k_means.fit(pixels)
 
@@ -74,6 +90,7 @@ def find_centroids(rs_image, k):
 
     # the rgb values of centroids
     centroids_colors = np.asarray(color_k_means.cluster_centers_, dtype='uint8')
-    return centroids_colors
+    
+    return color_k_means
 
 
